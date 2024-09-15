@@ -1,5 +1,3 @@
-# Djangification
-
 # Automating Old Webpage Conversion to Django 🛠️
 
 ## Why I Created This

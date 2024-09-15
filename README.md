@@ -1,4 +1,4 @@
-# Djangify
+# Djangification
 
 # Automating Old Webpage Conversion to Django 🛠️
 

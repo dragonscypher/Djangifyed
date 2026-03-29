@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+
+jobs:
+  lint-and-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Verify script imports
+        run: |
+          python -m py_compile auto.py
+
+      - name: Plan-only smoke test
+        run: |
+          mkdir -p sample_legacy
+          cat > sample_legacy/index.html <<'EOF'
+          <html><head><link rel="stylesheet" href="/css/site.css"></head><body><h1>Hello</h1></body></html>
+          EOF
+          mkdir -p sample_legacy/css
+          echo "body{font-family:sans-serif;}" > sample_legacy/css/site.css
+          python auto.py --source sample_legacy --project-name ci_demo --target dual --output-root ci_output --plan-only
+
+      - name: Run test suite
+        run: pytest tests/ -v --tb=short

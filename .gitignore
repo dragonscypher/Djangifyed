@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+sample_legacy/
+test_output/
+test_output_exec/
+output/
+.env
+.env.*
+*.mp4
